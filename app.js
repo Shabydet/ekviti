@@ -7,7 +7,7 @@
 
   const LS_KEY = 'eq.settings.v1';
   // Должно совпадать с VERSION в sw.js — иначе телефон останется на старой копии.
-  const APP_VERSION = '1.1.0';
+  const APP_VERSION = '1.2.0';
 
   // «случайная рука»: все комбинации из двух карт, кроме уже известных движок отбросит сам
   const ANY_HAND = [];
@@ -68,8 +68,10 @@
     openSheet('Выбери карту', (body) => {
       const grid = document.createElement('div');
       grid.className = 'pickgrid';
-      for (let r = 12; r >= 0; r--) {
-        for (let s = 0; s < 4; s++) {
+      // строка на масть (♠ ♥ ♦ ♣), внутри — от туза до двойки: карту ищут
+      // «сначала масть, потом старшинство», а не по общему списку
+      for (const s of [3, 2, 1, 0]) {
+        for (let r = 12; r >= 0; r--) {
           const card = r * 4 + s;
           const el = document.createElement('button');
           el.className = 'pcard ' + (s === 1 || s === 2 ? 'red' : 'black')
