@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Эквити — покерный тренажёр</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Эквити">
+<meta name="theme-color" content="#0b0e14">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+
+<!-- iPhone 15 Pro: 393×852 @3x = 1179×2556 -->
+<link rel="apple-touch-startup-image" href="assets/splash/splash-1179x2556.png"
+      media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
+<link rel="apple-touch-startup-image" href="assets/splash/splash-2556x1179.png"
+      media="(device-width: 852px) and (device-height: 393px) and (-webkit-device-pixel-ratio: 3)">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand"><span class="mark">♠</span><h1 id="title">Тренировка</h1></div>
+    <span class="netchip" id="netChip" hidden><i></i>офлайн</span>
+    <button class="iconbtn" id="btnSettings" aria-label="Настройки">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M19.4 13.6a7.7 7.7 0 0 0 0-3.2l1.6-1.2-1.7-3-1.9.8a7.6 7.6 0 0 0-2.8-1.6L14.3 3h-3.4l-.3 2.4a7.6 7.6 0 0 0-2.8 1.6l-1.9-.8-1.7 3 1.6 1.2a7.7 7.7 0 0 0 0 3.2L4.2 14.8l1.7 3 1.9-.8a7.6 7.6 0 0 0 2.8 1.6l.3 2.4h3.4l.3-2.4a7.6 7.6 0 0 0 2.8-1.6l1.9.8 1.7-3-1.6-1.2Z"
+              stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </header>
+
+  <main class="content">
+
+    <!-- ─────────────── тренировка ─────────────── -->
+    <section class="screen" id="screenTrain">
+      <div class="scorerow">
+        <div class="stat"><b id="tProgress">0/10</b><span id="tProgressLabel">спот</span></div>
+        <div class="stat"><b id="tScore">0</b><span>очков</span></div>
+        <div class="stat"><b id="tStreak">0</b><span>серия</span></div>
+      </div>
+
+      <div class="spot" id="spotCard">
+        <div class="spot-cards" id="spotCards"></div>
+        <div class="spot-facts" id="spotFacts"></div>
+      </div>
+
+      <div class="question" id="question">—</div>
+      <div class="answers" id="answers"></div>
+      <div class="reveal hidden" id="reveal"></div>
+      <button class="btn primary wide hidden" id="btnNext">Дальше</button>
+
+      <div class="summary hidden" id="summary"></div>
+    </section>
+
+    <!-- ─────────────── калькулятор ─────────────── -->
+    <section class="screen hidden" id="screenCalc">
+
+      <div class="block">
+        <div class="block-head">
+          <span>Твоя рука</span>
+          <button class="link" id="btnHeroClear">сбросить</button>
+        </div>
+        <div class="slots" id="heroSlots"></div>
+      </div>
+
+      <div class="block">
+        <div class="block-head">
+          <span>Борд</span>
+          <span class="hint" id="boardHint">0 карт</span>
+        </div>
+        <div class="slots board" id="boardSlots"></div>
+      </div>
+
+      <div class="result">
+        <div class="eq-line">
+          <div class="eq-big"><span id="eqValue">—</span><span class="pctsign">%</span></div>
+          <div class="eq-right">
+            <div class="eq-sub">шанс победы против случайной руки</div>
+            <div class="made" id="madeHand">—</div>
+          </div>
+        </div>
+        <div class="bar"><i class="w" id="barWin"></i><i class="t" id="barTie"></i><i class="l" id="barLose"></i></div>
+        <div class="barlegend">
+          <span>победа <b id="sWin">—</b></span>
+          <span>ничья <b id="sTie">—</b></span>
+          <span>проигрыш <b id="sLose">—</b></span>
+        </div>
+        <div class="verdict" id="verdict">—</div>
+        <div class="meta"><span id="metaRange">—</span><span id="metaTrials">—</span></div>
+        <div class="progress"><i id="progressBar"></i></div>
+      </div>
+
+      <div class="block">
+        <div class="grid3">
+          <label>Банк<input id="potIn" type="number" inputmode="decimal" step="5" min="0" value="100"></label>
+          <label>Ставка<input id="betIn" type="number" inputmode="decimal" step="5" min="0" value="50"></label>
+          <label>ББ<input id="bbIn" type="number" inputmode="decimal" step="1" min="0.01" value="2"></label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button data-tab="train" class="on">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v18M4 8h16M6 16h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>Тренировка</span>
+    </button>
+    <button data-tab="calc">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M8 7h8M8 12h2M12 12h2M16 12h.5M8 16h2M12 16h2M16 16h.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>Калькулятор</span>
+    </button>
+  </nav>
+</div>
+
+<!-- шторка -->
+<div class="sheet hidden" id="sheet">
+  <div class="sheet-back" id="sheetBack"></div>
+  <div class="sheet-panel">
+    <div class="sheet-head">
+      <h2 id="sheetTitle">—</h2>
+      <button class="iconbtn small" id="sheetClose" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </div>
+</div>
+
+<script src="engine.js"></script>
+<script src="drills.js"></script>
+<script src="ui.js"></script>
+<script src="app.js"></script>
+<script src="trainer.js"></script>
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+
+  // Сеть пропала — приложение продолжает работать: показываем это спокойно, без ругани.
+  function paintNet() {
+    var off = navigator.onLine === false;
+    var chip = document.getElementById('netChip');
+    if (chip) chip.hidden = !off;
+    root.classList.toggle('is-offline', off);
+  }
+  window.addEventListener('online', paintNet);
+  window.addEventListener('offline', paintNet);
+  paintNet();
+
+  // С локального файла (file://) service worker недоступен — это ожидаемо и не мешает работе.
+  if (location.protocol === 'file:') { root.classList.add('is-file'); return; }
+  if (!('serviceWorker' in navigator)) return;
+
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js', { scope: './' }).then(function (reg) {
+      window.EQ_SW = reg;
+      // просим браузер не вытеснять кэш при нехватке места
+      if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {});
+      // тихая проверка обновлений при каждом запуске
+      reg.update().catch(function () {});
+    }).catch(function (e) {
+      console.warn('service worker не зарегистрировался:', e && e.message);
+    });
+  });
+})();
+</script>
+</body>
+</html>
