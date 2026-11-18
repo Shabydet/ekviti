@@ -1,0 +1,310 @@
+/* Эквити — мобильное приложение под iPhone 15 Pro (393×852, safe-area, тёмная тема). */
+
+:root{
+  --bg:#0b0e14;
+  --bg2:#11151e;
+  --panel:#141926;
+  --panel2:#1a2030;
+  --line:#242c3d;
+  --txt:#e8eaf0;
+  --dim:#8b93a7;
+  --dim2:#646d82;
+  --green:#35c07d;
+  --green2:#2aa568;
+  --red:#e5484d;
+  --blue:#2b6ef5;
+  --gold:#e8b23a;
+  --radius:14px;
+  --tap:44px;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+button{touch-action:manipulation}
+
+html,body{
+  height:100%;margin:0;padding:0;background:var(--bg);color:var(--txt);
+  font:15px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior:none;
+}
+body{position:fixed;inset:0;overflow:hidden;user-select:none;-webkit-user-select:none}
+input{user-select:text;-webkit-user-select:text}
+
+.app{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top);
+}
+
+/* ───── верхняя панель ───── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px 6px;flex:0 0 auto;
+}
+.brand{display:flex;align-items:center;gap:9px}
+.brand .mark{
+  width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(160deg,#1f6b4a,#12331f);color:#6ee7a8;font-size:17px;
+  box-shadow:inset 0 0 0 1px #2b6a4b;
+}
+.brand h1{font-size:17px;font-weight:650;margin:0;letter-spacing:.2px}
+
+.iconbtn{
+  width:var(--tap);height:var(--tap);border-radius:12px;border:1px solid var(--line);
+  background:var(--panel);color:var(--dim);display:grid;place-items:center;
+  font-size:16px;cursor:pointer;transition:.15s;
+}
+.iconbtn:active{background:var(--panel2);color:var(--txt);transform:scale(.97)}
+.iconbtn.small{width:34px;height:34px;border-radius:10px}
+
+/* ───── контент ───── */
+.content{
+  flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;padding:0 14px 18px;
+}
+.screen{padding-top:4px}
+
+/* ───── таб-бар ───── */
+.tabbar{
+  flex:0 0 auto;display:flex;padding:6px 8px calc(env(safe-area-inset-bottom) + 6px);
+  background:rgba(11,14,20,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--line);
+}
+.tabbar button{
+  flex:1;min-height:var(--tap);border:0;background:transparent;color:var(--dim2);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font:inherit;font-size:10.5px;letter-spacing:.2px;cursor:pointer;padding:4px 0;
+  border-radius:12px;transition:.15s;
+}
+.tabbar button.on{color:var(--green)}
+.tabbar button:active{transform:scale(.97)}
+
+/* ───── карты ───── */
+.card{
+  width:62px;height:88px;border-radius:11px;background:#f4f6fa;
+  box-shadow:0 2px 8px rgba(0,0,0,.45),inset 0 -2px 0 rgba(0,0,0,.08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-weight:700;position:relative;transition:.12s;overflow:hidden;
+}
+.card .rk{font-size:25px;line-height:1;font-family:-apple-system,"SF Pro Display",sans-serif;font-weight:750}
+.card .st{font-size:19px;line-height:1.1;margin-top:1px}
+.card.red{color:#d8393f}
+.card.black{color:#141a26}
+.card.empty{background:#151b28;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--dim2)}
+.card.empty .plus{font-size:24px;font-weight:400}
+.card:active{transform:scale(.96)}
+.card.small{width:46px;height:64px;border-radius:9px}
+.card.small .rk{font-size:18px}
+.card.small .st{font-size:14px}
+
+.slots{display:flex;gap:8px;flex-wrap:wrap}
+.slots.board{gap:6px}
+.slots.board .card{width:58px;height:80px}
+.slots.board .card .rk{font-size:22px}
+
+/* ───── блоки калькулятора ───── */
+.block{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px;margin-bottom:10px}
+.block-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.block-head > span:first-child{
+  font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);
+}
+.hint{font-size:11px;color:var(--dim2)}
+.link{border:0;background:none;color:var(--dim);font:inherit;font-size:12px;padding:6px;min-height:var(--tap);cursor:pointer}
+.link:active{color:var(--txt)}
+
+.seg{display:inline-flex;background:#0e121b;border:1px solid var(--line);border-radius:11px;padding:2px;gap:2px}
+.seg.full{display:flex;width:100%;margin-bottom:10px}
+.seg button{
+  flex:1;min-height:42px;border:0;background:transparent;color:var(--dim);
+  font:inherit;font-size:13px;padding:6px 12px;border-radius:9px;cursor:pointer;transition:.12s;
+}
+.seg button.on{background:var(--panel2);color:var(--txt);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+
+.rangebtn{
+  width:100%;display:flex;align-items:center;gap:10px;min-height:52px;
+  background:#0e121b;border:1px solid var(--line);border-radius:12px;padding:8px 12px;
+  color:var(--txt);font:inherit;cursor:pointer;margin-bottom:10px;
+}
+.rangebtn:active{background:#121826}
+.rangebtn-name{font-weight:600;font-size:15px}
+.rangebtn-meta{flex:1;text-align:right;font-size:12px;color:var(--dim)}
+.chev{color:var(--dim2);font-size:18px;line-height:1}
+
+.opp-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.opp-row > span{font-size:12px;color:var(--dim)}
+.opp-row .seg button{padding:6px 13px;min-width:42px}
+
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.grid3 label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--dim);letter-spacing:.05em}
+.grid3 input{
+  min-height:var(--tap);width:100%;background:#0e121b;border:1px solid var(--line);
+  border-radius:11px;color:var(--txt);font:inherit;font-size:17px;font-weight:600;
+  text-align:center;padding:0 6px;appearance:none;-moz-appearance:textfield;
+}
+.grid3 input::-webkit-outer-spin-button,.grid3 input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.grid3 input:focus{outline:none;border-color:var(--blue)}
+
+/* ───── результат ───── */
+.result{background:linear-gradient(180deg,#161d2c,#121722);border:1px solid var(--line);border-radius:16px;padding:14px}
+.eq-line{display:flex;align-items:center;gap:14px}
+.eq-big{display:flex;align-items:baseline;color:var(--green);font-weight:750;letter-spacing:-1px}
+.eq-big span:first-child{font-size:46px;line-height:1}
+.eq-big .pctsign{font-size:19px;margin-left:3px;opacity:.8}
+.eq-right{flex:1;min-width:0}
+.eq-sub{font-size:12.5px;color:var(--dim)}
+.eq-sub b{color:var(--txt);font-weight:600}
+.made{font-size:12.5px;color:#a9b2c6;margin-top:3px;line-height:1.3}
+
+.bar{display:flex;height:9px;border-radius:6px;overflow:hidden;margin:12px 0 7px;background:#0d111a}
+.bar i{display:block;height:100%;width:0;transition:width .3s}
+.bar .w{background:var(--green)}
+.bar .t{background:#5a6478}
+.bar .l{background:var(--red)}
+.barlegend{display:flex;justify-content:space-between;font-size:11.5px;color:var(--dim)}
+.barlegend b{color:var(--txt);font-weight:600}
+
+.verdict{
+  margin-top:11px;padding:10px 12px;border-radius:11px;font-size:13px;line-height:1.35;
+  background:#0f1420;border:1px solid var(--line);color:var(--dim);
+}
+.verdict.good{background:rgba(53,192,125,.12);border-color:rgba(53,192,125,.4);color:#8ff0bd}
+.verdict.bad{background:rgba(229,72,77,.1);border-color:rgba(229,72,77,.35);color:#ffb0b3}
+
+.meta{display:flex;justify-content:space-between;gap:8px;margin-top:9px;font-size:11px;color:var(--dim2)}
+.progress{height:3px;border-radius:2px;background:#0d111a;overflow:hidden;margin-top:9px}
+.progress i{display:block;height:100%;width:0;background:var(--blue);transition:width .2s}
+
+/* ───── тренировка ───── */
+.scorerow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.stat{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:8px 10px;display:flex;flex-direction:column;gap:1px;
+}
+.stat b{font-size:19px;font-weight:700;letter-spacing:-.3px}
+.stat span{font-size:10.5px;color:var(--dim2);letter-spacing:.05em;text-transform:uppercase}
+
+.spot{
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  padding:13px;margin-bottom:11px;
+}
+.spot-cards{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.spot-row{display:flex;align-items:center;gap:9px}
+.spot-row .label{width:52px;flex:0 0 auto;font-size:10.5px;color:var(--dim2);letter-spacing:.06em;text-transform:uppercase}
+.spot-row .cards{display:flex;gap:6px;flex-wrap:wrap}
+
+.spot-facts{display:flex;flex-wrap:wrap;gap:6px}
+.fact{
+  font-size:12px;color:#a9b2c6;background:#0f1420;border:1px solid var(--line);
+  border-radius:8px;padding:4px 9px;
+}
+.fact b{color:var(--txt);font-weight:600}
+
+.question{font-size:17px;font-weight:640;line-height:1.3;margin:2px 2px 11px;letter-spacing:-.2px}
+
+.answers{display:grid;gap:9px}
+.answers.two{grid-template-columns:1fr 1fr}
+.btn{
+  min-height:52px;border-radius:13px;border:1px solid var(--line);background:var(--panel2);
+  color:var(--txt);font:inherit;font-size:16px;font-weight:600;cursor:pointer;padding:12px 16px;
+  transition:.13s;
+}
+.btn:active{transform:scale(.98);filter:brightness(1.1)}
+.btn.primary{background:linear-gradient(180deg,#3ecf88,#2aa568);border-color:#2aa568;color:#06210f}
+.btn.ghost{background:transparent;color:var(--dim)}
+.btn.wide{width:100%;margin-top:10px}
+.btn.correct{background:rgba(53,192,125,.18);border-color:var(--green);color:#9df3c7}
+.btn.wrong{background:rgba(229,72,77,.16);border-color:var(--red);color:#ffc0c2}
+.btn:disabled{opacity:.55}
+
+.reveal{
+  margin-top:11px;background:var(--panel);border:1px solid var(--line);
+  border-radius:14px;padding:13px;
+}
+.reveal .big{font-size:30px;font-weight:750;letter-spacing:-.5px}
+.reveal .big.good{color:var(--green)}
+.reveal .big.bad{color:var(--red)}
+.reveal .row{display:flex;justify-content:space-between;font-size:13px;color:var(--dim);margin-top:6px}
+.reveal .row b{color:var(--txt);font-weight:600}
+.reveal .why{font-size:12.5px;color:#a9b2c6;margin-top:9px;line-height:1.4}
+
+.summary{
+  background:linear-gradient(180deg,#17202f,#121722);border:1px solid var(--line);
+  border-radius:16px;padding:16px;text-align:center;
+}
+.summary h2{margin:0 0 4px;font-size:20px;letter-spacing:-.3px}
+.summary .sub{color:var(--dim);font-size:13px;margin-bottom:14px}
+.summary .grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:6px}
+.summary .cell{background:#0f1420;border:1px solid var(--line);border-radius:12px;padding:11px}
+.summary .cell b{display:block;font-size:22px;letter-spacing:-.4px}
+.summary .cell span{font-size:11px;color:var(--dim2)}
+
+/* ───── шторка ───── */
+.sheet{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end}
+.sheet.hidden{display:none}
+.sheet-back{position:absolute;inset:0;background:rgba(4,6,10,.62);opacity:0;transition:opacity .18s}
+.sheet.shown .sheet-back{opacity:1}
+.sheet-panel{
+  position:relative;width:100%;max-height:90dvh;display:flex;flex-direction:column;
+  background:var(--panel);border-radius:20px 20px 0 0;border-top:1px solid var(--line);
+  transform:translateY(100%);transition:transform .22s cubic-bezier(.22,.9,.3,1);
+  padding-bottom:calc(env(safe-area-inset-bottom) + 10px);
+}
+.sheet.shown .sheet-panel{transform:translateY(0)}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px}
+.sheet-head h2{margin:0;font-size:16px;font-weight:650;letter-spacing:-.2px}
+.sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 14px 8px}
+body.locked .content{overflow:hidden}
+
+/* ───── выбор карты ───── */
+.pickgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;padding-bottom:6px}
+.pcard{
+  aspect-ratio:5/7;border-radius:9px;background:#f4f6fa;border:0;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font:inherit;font-weight:700;transition:.1s;padding:0;
+}
+.pcard .rk{font-size:16px;line-height:1;font-weight:750}
+.pcard .st{font-size:13px;line-height:1.1}
+.pcard.red{color:#d8393f}
+.pcard.black{color:#141a26}
+.pcard:active{transform:scale(.94)}
+.pcard.used{opacity:.22}
+.picker-actions{display:flex;gap:9px;margin-top:4px}
+
+/* ───── пресеты и матрица диапазона ───── */
+.presets{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.pill{
+  min-height:38px;border:1px solid var(--line);background:#0e121b;color:#a9b2c6;
+  font:inherit;font-size:13px;padding:8px 13px;border-radius:20px;cursor:pointer;transition:.12s;
+}
+.pill:active{transform:scale(.97)}
+.pill.on{background:rgba(43,110,245,.2);border-color:var(--blue);color:#cfe0ff}
+
+.matrix-wrap{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px;margin:0 -14px;padding-left:14px;padding-right:14px}
+.matrix{display:grid;grid-template-columns:repeat(13,40px);gap:3px;width:max-content}
+.cell{
+  width:40px;height:40px;border-radius:7px;background:#0f1420;border:1px solid #1d2433;
+  color:#6b7488;font:inherit;font-size:11px;font-weight:650;display:grid;place-items:center;
+  cursor:pointer;transition:background .08s,color .08s,border-color .08s;padding:0;
+}
+.cell.w1{background:var(--blue);border-color:#4a83f8;color:#fff}
+.cell.w05{background:rgba(43,110,245,.4);border-color:var(--blue);color:#dbe4ff}
+.cell:active{transform:scale(.94)}
+.cell,.pcard,.card{-webkit-touch-callout:none}
+
+/* ───── настройки ───── */
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.setrow:last-child{border-bottom:0}
+.setrow .name{font-size:14px}
+.setrow .desc{font-size:11.5px;color:var(--dim2);margin-top:2px}
+.setrow .seg button{padding:6px 11px;min-width:36px}
+
+.hidden{display:none !important}
+
+/* ───── индикатор офлайна (появляется только когда сети нет) ───── */
+.netchip{
+  margin-left:auto;margin-right:8px;display:inline-flex;align-items:center;gap:6px;
+  height:24px;padding:0 9px;border-radius:999px;font-size:11.5px;font-weight:600;
+  letter-spacing:.2px;color:var(--gold);background:rgba(232,178,58,.12);
+  border:1px solid rgba(232,178,58,.32);white-space:nowrap;
+}
+.netchip[hidden]{display:none}
+.netchip i{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 6px currentColor}
