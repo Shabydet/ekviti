@@ -77,6 +77,9 @@
   var RED_OK = 0.12;
   var CORNER_MIN = 0.40;
   var MIN_SCORE = 0.55;
+  // согласованность размера: рамка уже самой крупной в кадре во столько раз —
+  // это не карта, а мелкий элемент интерфейса
+  var MIN_REL_W = 0.45;
 
   // --- мелкие утилиты -------------------------------------------------------
 
@@ -1269,8 +1272,49 @@
       }
       if (ok) keep.push(c);
     }
-    keep.sort(function (a, b) { return (a.y - b.y) || (a.x - b.x); });
-    return keep;
+    // 5) согласованность размера: карты на столе одного размера, а мелкие
+    // яркие элементы интерфейса (кнопки, цифры банка) проходят общие фильтры.
+    if (keep.length > 1) {
+      var widest = 0;
+      for (i = 0; i < keep.length; i++) if (keep[i].w > widest) widest = keep[i].w;
+      var minW = MIN_REL_W * widest;
+      var tight = [];
+      for (i = 0; i < keep.length; i++) if (keep[i].w >= minW) tight.push(keep[i]);
+      keep = tight;
+    }
+    return orderCards(keep);
+  }
+
+  // Порядок карт: сверху вниз по рядам, внутри ряда — слева направо.
+  // Сортировка по (y, x) на фото под углом перемешивает ряд: у карт одного
+  // ряда y отличается на несколько пикселей, и они уходят в обратном порядке.
+  function orderCards(cards) {
+    if (!cards.length) return [];
+    var hs = cards.map(function (c) { return c.h; }).sort(function (a, b) { return a - b; });
+    var tol = 0.5 * hs[(hs.length - 1) >> 1];
+    var sorted = cards.slice().sort(function (a, b) {
+      return (a.y + a.h / 2) - (b.y + b.h / 2);
+    });
+    var rows = [];
+    for (var i = 0; i < sorted.length; i++) {
+      var c = sorted[i];
+      var cy = c.y + c.h / 2;
+      var row = rows.length ? rows[rows.length - 1] : null;
+      if (row && Math.abs(cy - row.cy) <= tol) {
+        row.items.push(c);
+        var sum = 0;
+        for (var k = 0; k < row.items.length; k++) sum += row.items[k].y + row.items[k].h / 2;
+        row.cy = sum / row.items.length;
+        continue;
+      }
+      rows.push({ cy: cy, items: [c] });
+    }
+    var out = [];
+    for (var r = 0; r < rows.length; r++) {
+      var items = rows[r].items.slice().sort(function (a, b) { return a.x - b.x; });
+      for (var m = 0; m < items.length; m++) out.push(items[m]);
+    }
+    return out;
   }
 
   root.CardDetect = {
