@@ -67,6 +67,16 @@
     <!-- ─────────────── калькулятор ─────────────── -->
     <section class="screen hidden" id="screenCalc">
 
+      <button class="scanbtn" id="btnScan">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.2a1 1 0 0 0 .86-.5l.9-1.5a1 1 0 0 1 .86-.5h3.36a1 1 0 0 1 .86.5l.9 1.5a1 1 0 0 0 .86.5h1.2A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-8Z" stroke="currentColor" stroke-width="1.7"/>
+          <circle cx="12" cy="12.4" r="3.1" stroke="currentColor" stroke-width="1.7"/>
+        </svg>
+        <span>Сканировать стол</span>
+      </button>
+
+      <div class="scan-note hidden" id="scanNote"></div>
+
       <div class="block">
         <div class="block-head">
           <span>Твоя рука</span>
@@ -124,6 +134,26 @@
   </nav>
 </div>
 
+<!-- камера: видоискатель -> снимок -> карты -->
+<div class="cam hidden" id="cam">
+  <video id="camVideo" playsinline autoplay muted></video>
+  <canvas id="camShot" class="hidden"></canvas>
+  <div class="cam-overlay hidden" id="camOverlay"></div>
+
+  <div class="cam-top">
+    <span class="cam-hint" id="camHint">наведи камеру на экран с игрой</span>
+    <button class="iconbtn" id="camClose" aria-label="Закрыть">✕</button>
+  </div>
+
+  <div class="cam-bottom">
+    <button class="cam-side hidden" id="camRetake">переснять</button>
+    <button class="shutter" id="camShutter" aria-label="Снять"></button>
+    <button class="cam-side hidden" id="camApply">в калькулятор</button>
+  </div>
+
+  <div class="cam-msg" id="camMsg"></div>
+</div>
+
 <!-- шторка -->
 <div class="sheet hidden" id="sheet">
   <div class="sheet-back" id="sheetBack"></div>
@@ -139,6 +169,10 @@
 <script src="engine.js"></script>
 <script src="drills.js"></script>
 <script src="ui.js"></script>
+<script src="ocr-templates.js"></script>
+<script src="ocr.js"></script>
+<script src="detect.js"></script>
+<script src="scan.js"></script>
 <script src="app.js"></script>
 <script src="trainer.js"></script>
 <script>

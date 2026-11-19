@@ -1,7 +1,7 @@
 /* Service worker: приложение целиком лежит в кэше и открывается без сети.
    Версия ниже должна совпадать с APP_VERSION в app.js (проверяет tools/make_release.py).
    Меняешь файлы приложения — поднимай VERSION, иначе телефон останется на старой копии. */
-const VERSION = '1.2.0';
+const VERSION = '1.6.0';
 const CACHE = 'ekviti-' + VERSION;
 
 /* Всё, что нужно для полного офлайна. index.html — точка входа для навигации. */
@@ -12,6 +12,10 @@ const CORE = [
   'engine.js',
   'drills.js',
   'ui.js',
+  'ocr-templates.js',
+  'ocr.js',
+  'detect.js',
+  'scan.js',
   'app.js',
   'trainer.js',
   'manifest.webmanifest',

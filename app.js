@@ -7,7 +7,7 @@
 
   const LS_KEY = 'eq.settings.v1';
   // Должно совпадать с VERSION в sw.js — иначе телефон останется на старой копии.
-  const APP_VERSION = '1.2.0';
+  const APP_VERSION = '1.6.0';
 
   // «случайная рука»: все комбинации из двух карт, кроме уже известных движок отбросит сам
   const ANY_HAND = [];
@@ -104,6 +104,50 @@
     else state.board[idx] = card;
     renderCards();
     scheduleCalc(20);
+  }
+
+  /**
+   * Карты со сканера. Пустое поле заполняем, занятое не трогаем.
+   * layout = {hero: [...], board: [...]} — сканер сам знает, где рука и где борд;
+   * без layout первые две карты идут в руку, остальные в борд (старое поведение).
+   */
+  function applyScan(ids, layout) {
+    const okId = (c) => Number.isInteger(c) && c >= 0 && c < 52;
+    const free = new Set();
+    for (let c = 0; c < 52; c++) {
+      if (state.hero.indexOf(c) === -1 && state.board.indexOf(c) === -1) free.add(c);
+    }
+
+    let heroIds, boardIds;
+    if (layout) {
+      heroIds = (layout.hero || []).filter(okId);
+      boardIds = (layout.board || []).filter(okId);
+    } else {
+      const list = (ids || []).filter(okId);
+      heroIds = list.slice(0, 2);
+      boardIds = list.slice(2);
+    }
+    if (!heroIds.length && !boardIds.length) return false;
+
+    let changed = false;
+    for (const c of heroIds) {
+      const slot = state.hero.indexOf(null);
+      if (slot < 0) break;
+      if (!free.delete(c)) continue;
+      state.hero[slot] = c;
+      changed = true;
+    }
+    for (const c of boardIds) {
+      const slot = state.board.indexOf(null);
+      if (slot < 0) break;
+      if (!free.delete(c)) continue;
+      state.board[slot] = c;
+      changed = true;
+    }
+    if (!changed) return false;
+    renderCards();
+    scheduleCalc(20);
+    return true;
   }
 
   /* ─────────── пересчёт ─────────── */
@@ -338,6 +382,18 @@
   }
 
   /* ─────────── старт ─────────── */
+  /** Заметка под кнопкой сканера: что прочиталось само, а что добавить руками. */
+  let scanNoteTimer = null;
+  function setScanNote(text) {
+    const el = $('scanNote');
+    if (!el) return;
+    clearTimeout(scanNoteTimer);
+    if (!text) { el.classList.add('hidden'); el.textContent = ''; return; }
+    el.textContent = text;
+    el.classList.remove('hidden');
+    scanNoteTimer = setTimeout(() => el.classList.add('hidden'), 12000);
+  }
+
   function init() {
     renderCards();
 
@@ -356,6 +412,7 @@
     $('sheetClose').addEventListener('click', closeSheet);
     $('sheetBack').addEventListener('click', closeSheet);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(); });
+    if (root.Scanner) root.Scanner.init();
 
     setTab('train');
     clearResult('выбери свои карты');
@@ -363,7 +420,7 @@
 
   root.App = {
     state, settings, saveSettings, setTab, recalc, scheduleCalc, init, updateOdds,
-    handClassLabel, ANY_HAND, clearResult, setCard, renderCards,
+    handClassLabel, ANY_HAND, clearResult, setCard, renderCards, applyScan, setScanNote,
     version: APP_VERSION, cacheStatus, refreshApp,
     get tab() { return activeTab; },
   };
